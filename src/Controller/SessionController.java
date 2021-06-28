@@ -1,14 +1,23 @@
 package Controller;
 
-import Model.Authentication;
-import Model.ServicesManager;
+import Db.RailwayDb;
 import Model.UserAccount;
+import View.AuthenticationMenu.AuthenticationMenu;
 
 import java.text.ParseException;
 
 public class SessionController {
 
     private static UserAccount user;
+    private static RailwayDb db;
+
+    public static RailwayDb getDb() {
+        return db;
+    }
+
+    public static void setDb(RailwayDb db) {
+        SessionController.db = db;
+    }
 
     public static UserAccount getUser() {
         return user;
@@ -18,9 +27,9 @@ public class SessionController {
         this.user = user;
     }
 
-    public static void logOut(Authentication auth, ServicesManager sm) throws ParseException {
-        AuthenticationController authCon = new AuthenticationController();
-        authCon.authenticationController(auth, sm);
+    public static void logOut() throws ParseException {
+        AuthenticationMenu authMenu = new AuthenticationMenu();
+        authMenu.authenticationMenu();
     }
 
 

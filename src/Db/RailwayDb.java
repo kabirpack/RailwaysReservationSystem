@@ -2,6 +2,7 @@ package Db;
 
 import Model.PassengerTrain;
 import Model.RailwayUtility;
+import Model.UserAccount;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,18 +10,34 @@ import java.util.HashMap;
 public class RailwayDb {
 
     RailwayUtility utility = new RailwayUtility();
-    private ArrayList<PassengerTrain> trainArchives = new ArrayList<>();
+    private static ArrayList<PassengerTrain> trainList = new ArrayList<>();
+    private ArrayList<UserAccount> accounts = new ArrayList<>();
 
-    public ArrayList<PassengerTrain> getTrainArchives() {
-        return trainArchives;
+    public  ArrayList<UserAccount> getAccounts() {
+        return accounts;
     }
 
-    public void addToTrainArchives(PassengerTrain train) {
-        this.trainArchives.add(train);
+    public void addAccount(UserAccount account){
+        this.accounts.add(account);
+    }
+
+    public void setAccounts(ArrayList<UserAccount> accounts) {
+        this.accounts = accounts;
+    }
+
+    public ArrayList<PassengerTrain> getTrainList() {
+        return trainList;
+    }
+
+    public void addTrainData(PassengerTrain train) {
+        this.trainList.add(train);
     }
 
     public RailwayDb() {
 
+        UserAccount admin = new UserAccount("admin","admin");
+        admin.setAdmin();
+        accounts.add(admin);
 
 
         PassengerTrain train1 = new PassengerTrain("JanShathapthi","342325345","mayiladuthurai","coimbatore");
@@ -88,8 +105,8 @@ public class RailwayDb {
         schedule.put("SUNDAY","15:30");
         train3.setTrainSchedule(schedule);
 
-        addToTrainArchives(train1);
-        addToTrainArchives(train2);
-        addToTrainArchives(train3);
+        addTrainData(train1);
+        addTrainData(train2);
+        addTrainData(train3);
     }
 }

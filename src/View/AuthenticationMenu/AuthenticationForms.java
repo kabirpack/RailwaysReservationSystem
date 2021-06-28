@@ -3,23 +3,21 @@ package View.AuthenticationMenu;
 import Controller.SessionController;
 import Model.Authentication;
 import Model.RailwayUtility;
-import Model.ServicesManager;
 import Model.UserAccount;
-import View.RailwayMenu.RailwaysMenu;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class AuthenticationUI implements IAuthenticationUI {
+public class AuthenticationForms implements IAuthenticationUI {
     ArrayList<String> credentials = new ArrayList<>();
     boolean done;
-    RailwaysMenu mainMenu = new RailwaysMenu();
     RailwayUtility utility = new RailwayUtility();
+    Authentication auth = new Authentication();
 
     @Override
-    public ArrayList<String> registrationForm(Authentication auth) {
+    public ArrayList<String> registrationForm() {
         this.done = false;
         while (!done) {
             try {
@@ -49,7 +47,7 @@ public class AuthenticationUI implements IAuthenticationUI {
     }
 
     @Override
-    public UserAccount loginForm(Authentication auth, ServicesManager sm) throws ParseException {
+    public UserAccount loginForm() throws ParseException {
         this.done = false;
         while (!done) {
             try {
@@ -72,7 +70,7 @@ public class AuthenticationUI implements IAuthenticationUI {
                     return user;
                 }
             } catch (InputMismatchException e) {
-                SessionController.logOut(auth,sm);
+                SessionController.logOut();
             }
         }
         return null;

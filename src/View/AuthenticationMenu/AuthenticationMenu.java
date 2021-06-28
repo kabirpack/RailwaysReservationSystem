@@ -1,41 +1,33 @@
-package Controller;
+package View.AuthenticationMenu;
 
+import Controller.AdminMenuController;
+import Controller.SessionController;
+import Controller.UserMenuController;
 import Model.Authentication;
-import Model.ServicesManager;
 import Model.UserAccount;
-import View.AuthenticationMenu.AuthenticationUI;
 import View.RailwayMenu.MenuItems;
 import View.RailwayMenu.RailwaysMenu;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 
-public class AuthenticationController {
+public class AuthenticationMenu {
     private RailwaysMenu menu = new RailwaysMenu();
-    private AuthenticationUI authView = new AuthenticationUI();
+    private AuthenticationForms authForms = new AuthenticationForms();
     private AdminMenuController adminMenu = new AdminMenuController();
     private UserMenuController userMenu = new UserMenuController();
-    private static Authentication authSession;
 
 
-
-    public static Authentication getAuthSession() {
-        return authSession;
-    }
-
-    public void setAuthSession(Authentication authSession) {
-        this.authSession = authSession;
-    }
-
-    public void authenticationController(Authentication auth, ServicesManager sm) throws ParseException {
+    public void authenticationMenu() throws ParseException {
         ArrayList<String> credential;
         int choice = menu.showRailwayMenu(MenuItems.landingMenu.class);
 
         switch (choice){
             case 1:{
-                credential = authView.registrationForm(auth);
+                credential = authForms.registrationForm();
                 if(credential.size() >0){
                     UserAccount user = new UserAccount(credential.get(0),credential.get(1));
+                    Authentication auth = new Authentication();
                     auth.register(user);
                 }else{
                     System.out.println("Registration failed");
@@ -43,14 +35,14 @@ public class AuthenticationController {
                 }
             }
             case 2:{
-                UserAccount user = authView.loginForm(auth, sm);
+                UserAccount user = authForms.loginForm();
                 SessionController session = new SessionController();
                 session.setUser(user);
                 if(user.isAdmin()){
-                    adminMenu.adminMenuController(user, auth, sm);
+                    adminMenu.adminMenuController(user);
                 }
                 else if(!user.isAdmin()){
-                    userMenu.userMenuController(auth, sm);
+                    userMenu.userMenuController();
                 }
                 return;
             }

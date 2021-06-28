@@ -1,14 +1,16 @@
 package Model;
 
+import Controller.SessionController;
+import Db.RailwayDb;
+
 import java.util.ArrayList;
 
 public class Authentication {
-    private ArrayList<UserAccount> authenticatedAccounts = new ArrayList<>();
+    private ArrayList<UserAccount> authenticatedAccounts;
+    RailwayDb db = SessionController.getDb();
 
     public Authentication() {
-        UserAccount admin = new UserAccount("admin","admin");
-        admin.setAdmin();
-        authenticatedAccounts.add(admin);
+        authenticatedAccounts = db.getAccounts();
     }
 
     public boolean validateUserName(String userName){
@@ -43,7 +45,8 @@ public class Authentication {
     }
 
     public void register(UserAccount user){
-        authenticatedAccounts.add(user);
+        RailwayDb db = SessionController.getDb();
+        db.addAccount(user);
     }
 
     public ArrayList<UserAccount> getAuthenticatedAccounts() {

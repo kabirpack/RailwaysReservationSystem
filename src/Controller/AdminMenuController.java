@@ -14,8 +14,10 @@ public class AdminMenuController {
     ServiceManagerUI smUI = new ServiceManagerUI();
     ServiceController serviceController = new ServiceController();
     UserMenuController userMenuController = new UserMenuController();
+    Authentication auth = new Authentication();
+    ServicesManager sm = new ServicesManager();
 
-    public void adminMenuController(UserAccount user, Authentication auth, ServicesManager sm) throws ParseException {
+    public void adminMenuController(UserAccount user) throws ParseException {
         if(user.isAdmin()){
            int choice = menu.showRailwayMenu(MenuItems.adminMenu.class);
             switch (choice){
@@ -25,49 +27,49 @@ public class AdminMenuController {
                     switch (choice){
                         case 1:{
                             smUI.addService(sm,serviceController);
-                            this.adminMenuController(user, auth, sm);
+                            this.adminMenuController(user);
                             return;
                         }
                         case 2:{
                             smUI.removeService(sm, serviceController);
-                            this.adminMenuController(user, auth, sm);
+                            this.adminMenuController(user);
                             return;
                         }
                         case 3: {
                             smUI.holdService(sm, serviceController);
-                            this.adminMenuController(user, auth, sm);
+                            this.adminMenuController(user);
                             return;
                         }
                         case 4: {
                             smUI.resumeService(sm, serviceController);
-                            this.adminMenuController(user, auth, sm);
+                            this.adminMenuController(user);
                             return;
                         }
                         case 5: {
                             sm.showAllServices();
-                            this.adminMenuController(user, auth, sm);
+                            this.adminMenuController(user);
                             return;
                         }
                         case 6:{
-                            SessionController.logOut(auth, sm);
+                            SessionController.logOut();
                             return;
                         }
                     }
 
                 }
                 case 2:{
-                userMenuController.userMenuController(auth,sm);
-                this.adminMenuController(user, auth, sm);
+                userMenuController.userMenuController();
+                this.adminMenuController(user);
                 return;
                 }
 
                 case 3:{
                    serviceController.prepareChart(sm);
-                    this.adminMenuController(user, auth, sm);
+                    this.adminMenuController(user);
                     return;
                 }
                 case 4:{
-                    SessionController.logOut(auth,sm);
+                    SessionController.logOut();
                 }
             }
 

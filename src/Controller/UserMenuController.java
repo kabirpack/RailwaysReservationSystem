@@ -14,8 +14,10 @@ public class UserMenuController {
     BookingUI bookUI = new BookingUI();
     BookingController bc = new BookingController();
     ArrayList<String> fromTo = new ArrayList<>();
+    Authentication auth = new Authentication();
+    ServicesManager sm = new ServicesManager();
 
-    public void userMenuController(Authentication auth, ServicesManager sm) throws ParseException {
+    public void userMenuController() throws ParseException {
         int choice = menu.showRailwayMenu(MenuItems.userMenu.class);
         switch (choice){
             case 1:{
@@ -25,21 +27,21 @@ public class UserMenuController {
                 case 1:{
                     bc.bookToday(fromTo, sm);
                     if(!SessionController.getUser().isAdmin()) {
-                        this.userMenuController(auth, sm);
+                        this.userMenuController();
                     }
                     return;
                 }
                 case 2:{
                     bc.bookTomorrow(fromTo, sm);
                     if(!SessionController.getUser().isAdmin()) {
-                        this.userMenuController(auth, sm);
+                        this.userMenuController();
                     }
                     return;
                 }
                 case 3:{
                     bc.bookManual(fromTo, sm);
                     if(!SessionController.getUser().isAdmin()) {
-                        this.userMenuController(auth, sm);
+                        this.userMenuController();
                     }
                     return;
                 }
@@ -49,19 +51,19 @@ public class UserMenuController {
             case 2:{
                     bc.cancelTicket(SessionController.getUser(), sm);
                 if(!SessionController.getUser().isAdmin()) {
-                    this.userMenuController(auth, sm);
+                    this.userMenuController();
                 }
                     return;
             }
             case 3:{
                     bookUI.printAllTicket(SessionController.getUser(), sm);
                 if(!SessionController.getUser().isAdmin()) {
-                    this.userMenuController(auth, sm);
+                    this.userMenuController();
                 }
                     return;
             }
             case 4:{
-            SessionController.logOut(auth, sm);
+            SessionController.logOut();
                 return;
             }
         }

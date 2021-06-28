@@ -1,17 +1,22 @@
 package Model;
 
+import Controller.SessionController;
+import Db.RailwayDb;
+
 import java.util.ArrayList;
 
 public class ServicesManager {
 
-    private ArrayList<PassengerTrain> trainList = new ArrayList<>();
+    private ArrayList<PassengerTrain> trainList;
+    RailwayDb db = SessionController.getDb();
 
+    public ServicesManager() {
+        this.trainList = db.getTrainList();
+    }
 
     public boolean addService(PassengerTrain train){
-        if(trainList.add(train)){
-            return true;
-        }
-        return false;
+       db.addTrainData(train);
+       return true;
     }
 
     public void showAllServices(){
