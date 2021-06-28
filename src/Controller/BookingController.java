@@ -16,7 +16,7 @@ public class BookingController {
     PassengerTrain chosenTrain;
     boolean isAvailableToday;
     RailwayUtility utility = new RailwayUtility();
-//    UserAccount user = SessionController.getUser();            // use getter setter to set this to acheive abstraction
+//    UserAccount user = SessionController.getUser();
     HashMap<String, String> passengerDetails = new HashMap<>();
     ArrayList<Ticket> finalTickets;
 
@@ -26,6 +26,7 @@ public class BookingController {
         String day = SessionController.getUser().getSessionDay();
         chosenTrain = bookUI.listServices(fromTo, SessionController.getUser(), sm, day);
         Ticket ticket = new Ticket(utility.getCurrentDate(), fromTo.get(0), fromTo.get(1));
+        ticket.setRouteLength(sm.getRouteLength(fromTo.get(0), fromTo.get(1)));
         isAvailableToday = chosenTrain.isBookingOpen(utility.getDayByDate(ticket.getTicketDate()), SessionController.getUser().getSessionTime());
         if (isAvailableToday) {
             passengerDetails = bookUI.getPassengerDetails();
@@ -34,7 +35,6 @@ public class BookingController {
             bookUI.printAllTicket(SessionController.getUser(), sm);
         } else {
             System.out.println("Booking not available");
-//            this.goBackToUserMenu(AuthenticationController.getAuthSession(),sm);
         }
 
     }
@@ -42,7 +42,8 @@ public class BookingController {
     public void bookTomorrow(ArrayList<String> fromTo, ServicesManager sm) throws ParseException {
         String day = utility.getNextDay();
         chosenTrain = bookUI.listServices(fromTo, SessionController.getUser(), sm, day);
-        Ticket ticket = new Ticket(utility.getNextDate(), fromTo.get(0), fromTo.get(1)); // change
+        Ticket ticket = new Ticket(utility.getNextDate(), fromTo.get(0), fromTo.get(1));
+        ticket.setRouteLength(sm.getRouteLength(fromTo.get(0), fromTo.get(1)));
         passengerDetails = bookUI.getPassengerDetails();
         finalTickets = bm.bookTicket(chosenTrain, SessionController.getUser(), ticket, passengerDetails);
         SessionController.getUser().setMyTickets(finalTickets);
@@ -60,6 +61,7 @@ public class BookingController {
                 } else {
                     chosenTrain = bookUI.listServices(fromTo, SessionController.getUser(), sm, date);
                     Ticket ticket = new Ticket(date, fromTo.get(0), fromTo.get(1));
+                    ticket.setRouteLength(sm.getRouteLength(fromTo.get(0), fromTo.get(1)));
                     passengerDetails = bookUI.getPassengerDetails();
                     finalTickets = bm.bookTicket(chosenTrain, SessionController.getUser(), ticket, passengerDetails);
                     SessionController.getUser().setMyTickets(finalTickets);
@@ -85,15 +87,9 @@ public class BookingController {
                 PassengerTrain trainToCancel = sm.getTrainByNumber(ticketToCancel.getTrainNumber());
                 bm.cancelTicket(trainToCancel, ticketToCancel, ticketToCancel.getPassengerList().size());
             }
-//            this.goBackToUserMenu(AuthenticationController.getAuthSession(),sm);
         } else {
             System.out.println("No tickets to cancel.");
-//            this.goBackToUserMenu(AuthenticationController.getAuthSession(),sm);
         }
     }
 
-    public void goBackToUserMenu(Authentication auth, ServicesManager sm) throws ParseException {
-        UserMenuController userMenuController = new UserMenuController();
-        userMenuController.userMenuController(auth,sm);
-    }
 }

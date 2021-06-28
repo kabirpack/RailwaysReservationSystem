@@ -10,11 +10,13 @@ public class BookingUI implements IBookingUI {
     RailwayUtility utility = new RailwayUtility();
     ArrayList<String> fromTo = new ArrayList<>();
     ArrayList<PassengerTrain> availableTrains = new ArrayList<>();
-    Scanner sc = new Scanner(System.in);
+//    Scanner sc = new Scanner(System.in);
 
 
     @Override
     public ArrayList<String> getUserStation(ServicesManager sm) {
+        int fromIndex;
+        int toIndex;
         Scanner sc = new Scanner(System.in);
         this.done = false;
         while (!this.done) {
@@ -43,7 +45,12 @@ public class BookingUI implements IBookingUI {
                 }
 
                 if (from.equals(to)) {
-                    throw new InputMismatchException("from and to cannot be same");
+                    System.out.println("From and To cannot be same");
+                    throw new InputMismatchException();
+                }
+                if (sm.getRouteLength(from, to) < 0){
+                    System.out.println("No trains available for this route");
+                    throw new InputMismatchException();
                 }
                 this.done = true;
             } catch (InputMismatchException e) {
@@ -71,9 +78,9 @@ public class BookingUI implements IBookingUI {
         }
         System.out.println("choose a service");
         int arrayLength = availableTrains.size();
-        int choice = 1;
+        int choice = 1 ;
         try{
-            choice = sc.nextInt();
+            choice = utility.getIntInput();
             if(choice > arrayLength){
                 throw new InputMismatchException("invalid");
             }
@@ -88,13 +95,25 @@ public class BookingUI implements IBookingUI {
     public HashMap<String, String> getPassengerDetails(){
         HashMap<String,String> passengers = new HashMap<>();
         System.out.println("Enter Number of passengers");
-        int passengerCount = sc.nextInt();
-        for(int i=0; i<passengerCount ; i++){
-            System.out.println("Passenger Name");
-            String passengerName = utility.getStringInput();
-            System.out.println("Passenger Age");
-            String passengerAge = utility.getStringInput();
-            passengers.put(passengerName, passengerAge);
+        boolean done = false;
+        while(!done) {
+            try {
+                int passengerCount = utility.getIntInput();
+                if(passengerCount > 6){
+                    System.out.println("At most 6 tickets allowed for a booking");
+                    throw new InputMismatchException();
+                }
+                done = true;
+                for (int i = 0; i < passengerCount; i++) {
+                    System.out.println("Passenger Name");
+                    String passengerName = utility.getStringInput();
+                    System.out.println("Passenger Age");
+                    String passengerAge = utility.getStringInput();
+                    passengers.put(passengerName, passengerAge);
+                }
+            }catch(InputMismatchException e){
+                System.out.println("Enter correct value");
+            }
         }
         return passengers;
     }
@@ -130,7 +149,6 @@ public class BookingUI implements IBookingUI {
                 System.out.println(" ");
                 index++;
             }
-//            this.goBackToUserMenu(AuthenticationController.getAuthSession(),sm);
         }else{
             System.out.println("No active Tickets");
         }

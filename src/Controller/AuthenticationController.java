@@ -16,8 +16,6 @@ public class AuthenticationController {
     private AdminMenuController adminMenu = new AdminMenuController();
     private UserMenuController userMenu = new UserMenuController();
     private static Authentication authSession;
-//    private RailwayDb db = new RailwayDb();
-//    private ServicesManager sm = new ServicesManager();
 
 
 
@@ -30,7 +28,6 @@ public class AuthenticationController {
     }
 
     public void authenticationController(Authentication auth, ServicesManager sm) throws ParseException {
-//        sm.setTrainList(db.getTrainArchives());
         ArrayList<String> credential;
         int choice = menu.showRailwayMenu(MenuItems.landingMenu.class);
 

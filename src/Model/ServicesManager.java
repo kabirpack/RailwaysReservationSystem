@@ -134,6 +134,25 @@ public class ServicesManager {
         return "";
     }
 
+
+    public int getRouteLength(String from, String to){
+        int fromIndex = 0;
+        int toIndex = 0;
+        for (PassengerTrain train : trainList) {
+            if(train.getRoutes().contains(from) && train.getRoutes().contains(to)) {
+                for (int i = 0; i < train.getRoutes().size(); i++) {
+                    if (train.getRoutes().get(i).equals(from)) {
+                        fromIndex = i;
+                    }
+                    if (train.getRoutes().get(i).equals(to)) {
+                        toIndex = i;
+                    }
+                }
+            }
+        }
+        return toIndex - fromIndex;
+    }
+
     public void printRoutes(){
         for(PassengerTrain train : trainList){
             if(train.isActive()){

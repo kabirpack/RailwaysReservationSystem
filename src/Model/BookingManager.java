@@ -115,7 +115,43 @@ int prompt;
             train.getAvailableSeats().add(seat);
         }
         System.out.println("after cancelling available seats" + train.getAvailableSeats());
+
     }
 
+    public void confirmWaitingTicket(PassengerTrain train){
+        ArrayList<Ticket> bookedTickets = train.getTickets();
+        Ticket confirmTicket = bookedTickets.get(0);
+        for(int i = 0; i<bookedTickets.size();i++){
+           if(bookedTickets.get(i).getRouteLength()  > confirmTicket.getRouteLength() ){
+               confirmTicket = bookedTickets.get(i);
+           }
+       }
+        ArrayList<String> pnrSeatMap = new ArrayList<>();
+        HashMap<String,String> seatMap = new HashMap<>();
+        HashMap<String, String> passengers = confirmTicket.getPassengerList();
+
+        int i=0;
+        for(String psngr : passengers.keySet()){
+            seatMap.put(psngr,train.getAvailableSeats().get(i));
+            pnrSeatMap.add(train.getAvailableSeats().get(i));
+            i=i+1;
+        }
+
+        int length = passengers.keySet().size();
+        for(int j=0; j<length;  j++){
+            train.removeAvailableSeat(j);
+            length--;
+        }
+
+        confirmTicket.setSeatMap(seatMap);
+        confirmTicket.setPassengerList(passengers);
+        confirmTicket.setStatus("CONFIRMED");
+        confirmTicket.setConfirmed(true);
+        train.addBookedSeats(confirmTicket.getPnrNumber(),pnrSeatMap);
+        train.decrementTotalSeats(length);
+        train.getTickets().add(confirmTicket);
+        System.out.println("Ticket " + confirmTicket.getPnrNumber() + " is confirmed");
+
+    }
 
 }

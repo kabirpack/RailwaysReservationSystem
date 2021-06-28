@@ -22,24 +22,21 @@ public class ServiceController {
     public void removeServiceControl(ServicesManager sm, int choice){
         int prompt = menu.showRailwayMenu(MenuItems.yesOrNo.class);
         if (prompt == 1) {
-            sm.removeService(sm.getTrainList().get(choice - 1));  // make thi boolean
-            //  may be try to show remaining service
+            sm.removeService(sm.getTrainList().get(choice - 1));
         }
     }
 
     public void holdServiceControl(ServicesManager sm, int choice){
         int prompt = menu.showRailwayMenu(MenuItems.yesOrNo.class);
         if (prompt == 1) {
-            sm.holdService(sm.getTrainList().get(choice - 1));  // make thi boolean
-            //  may be try to show remaining service
+            sm.holdService(sm.getTrainList().get(choice - 1));
         }
     }
 
     public void resumeServiceControl(ServicesManager sm, int choice){
         int prompt = menu.showRailwayMenu(MenuItems.yesOrNo.class);
         if (prompt == 1) {
-            sm.resumeService(sm.getTrainList().get(choice - 1));  // make thi boolean
-            //  may be try to show remaining service
+            sm.resumeService(sm.getTrainList().get(choice - 1));
         }
     }
 

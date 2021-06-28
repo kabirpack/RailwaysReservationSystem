@@ -72,8 +72,6 @@ public class AuthenticationUI implements IAuthenticationUI {
                     return user;
                 }
             } catch (InputMismatchException e) {
-//                AuthenticationController authCon = new AuthenticationController();
-//                authCon.authenticationController(auth, sm);
                 SessionController.logOut(auth,sm);
             }
         }

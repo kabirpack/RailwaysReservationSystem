@@ -48,12 +48,16 @@ public class UserMenuController {
             }
             case 2:{
                     bc.cancelTicket(SessionController.getUser(), sm);
-                    this.userMenuController(auth,sm);
+                if(!SessionController.getUser().isAdmin()) {
+                    this.userMenuController(auth, sm);
+                }
                     return;
             }
             case 3:{
                     bookUI.printAllTicket(SessionController.getUser(), sm);
-                    this.userMenuController(auth,sm);
+                if(!SessionController.getUser().isAdmin()) {
+                    this.userMenuController(auth, sm);
+                }
                     return;
             }
             case 4:{

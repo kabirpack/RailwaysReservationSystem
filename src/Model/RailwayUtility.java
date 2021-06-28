@@ -36,6 +36,11 @@ public class RailwayUtility {
         return sc.nextLine();
     }
 
+    public int getIntInput(){
+        Scanner sc = new Scanner(System.in);
+        return sc.nextInt();
+    }
+
     public String getDayByDate(String date) throws ParseException {
         SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
         Date dt1 = format1.parse(date);

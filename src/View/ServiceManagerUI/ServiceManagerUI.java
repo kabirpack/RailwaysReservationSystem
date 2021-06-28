@@ -165,8 +165,8 @@ public class ServiceManagerUI {
             if(ticket.isConfirmed()){
                 System.out.println(index + ". " + ticket.getPnrNumber());
                 for(String name : ticket.getSeatMap().keySet()){
-                    System.out.print(name + " ");
-                    System.out.print(ticket.getSeatMap().get(name) + " ");
+                    System.out.print("Name - " +name + " ");
+                    System.out.print("Seat Number "+ticket.getSeatMap().get(name) + " ");
                     System.out.println();
                 }
                 index++;
