@@ -2,35 +2,50 @@ package View.RailwayMenu;
 
 public class MenuItems {
 
-    enum adminMenu {
+    public enum adminMenu {
         MANAGE_SERVICE,
         MANAGE_TICKET,
+        PREPARE_CHART,
         LOGOUT
     }
 
-    enum userMenu {
+    public enum userMenu {
         BOOK_TICKET,
         CANCEL_TICKET,
+        SHOW_TICKETS,
         LOGOUT
     }
 
-    enum landingMenu {
+     public enum landingMenu {
         REGISTER,
         LOGIN
     }
 
-    enum manageServiceMenu{
+    public enum manageServiceMenu{
         ADD_SERVICE,
         REMOVE_SERVICE,
         HOLD_SERVICE,
         RESUME_SERVICE,
-        SHOW_ALLSERVICE
+        SHOW_ALLSERVICE,
+        LOGOUT
     }
 
-    enum ticketDateChooser{
+    public enum ticketDateChooser{
         TODAY,
         TOMORROW,
-        ENTER_DATE_MANUALLY
+        ENTER_DATE_MANUALLY,
+        LOGOUT
     }
+
+    public enum yesOrNo{
+        YES,
+        NO
+    }
+
+    public enum ticketSeparation{
+        BOOK_ALL_TICKET,
+        BOOK_CONFIRMED_TICKET
+    }
+
 
 }

@@ -34,10 +34,4 @@ public class RailwaysMenu<E extends Enum<E>>{
     return  choice;
     }
 
-    public static void main(String[] args) {
-        RailwaysMenu rm = new RailwaysMenu();
-        System.out.println(rm.showRailwayMenu(MenuItems.userMenu.class));
-        System.out.println(rm.showRailwayMenu(MenuItems.adminMenu.class));
-    }
-
 }
