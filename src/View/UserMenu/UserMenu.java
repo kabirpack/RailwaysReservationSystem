@@ -1,6 +1,6 @@
 package View.UserMenu;
 
-import Controller.BookingController.BookingValidator;
+import View.BookingManagerUI.BookingChooser;
 import Controller.Session.SessionController;
 import View.BookingManagerUI.BookingUI;
 import View.RailwayMenu.MenuItems;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class UserMenu {
     RailwaysMenu menu = new RailwaysMenu();
     BookingUI bookUI = new BookingUI();
-    BookingValidator bookingValidator = new BookingValidator();
+    BookingChooser bookingChooser = new BookingChooser();
     ArrayList<String> fromTo = new ArrayList<>();
 
     public void userMenuController() throws ParseException {
@@ -23,21 +23,21 @@ public class UserMenu {
             choice = menu.showRailwayMenu(MenuItems.ticketDateChooser.class);
             switch (choice){
                 case 1:{
-                    bookingValidator.bookToday(fromTo);
+                    bookingChooser.bookToday(fromTo);
                     if(!SessionController.getUser().isAdmin()) {
                         this.userMenuController();
                     }
                     return;
                 }
                 case 2:{
-                    bookingValidator.bookTomorrow(fromTo);
+                    bookingChooser.bookTomorrow(fromTo);
                     if(!SessionController.getUser().isAdmin()) {
                         this.userMenuController();
                     }
                     return;
                 }
                 case 3:{
-                    bookingValidator.bookManualDate(fromTo);
+                    bookingChooser.bookManualDate(fromTo);
                     if(!SessionController.getUser().isAdmin()) {
                         this.userMenuController();
                     }
@@ -47,7 +47,7 @@ public class UserMenu {
             return;
             }
             case 2:{
-                    bookingValidator.cancelTicket(SessionController.getUser());
+                    bookingChooser.cancelTicket(SessionController.getUser());
                 if(!SessionController.getUser().isAdmin()) {
                     this.userMenuController();
                 }

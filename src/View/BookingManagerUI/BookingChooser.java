@@ -1,10 +1,12 @@
-package Controller.BookingController;
+package View.BookingManagerUI;
 
+import Controller.BookingController.BookingManager;
 import Controller.ServiceController.ServicesManager;
 import Controller.Session.SessionController;
-import Model.*;
+import Model.PassengerTrain;
+import Model.Ticket;
+import Model.UserAccount;
 import Utilities.RailwayUtility;
-import View.BookingManagerUI.BookingUI;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
-public class BookingValidator {
+public class BookingChooser {
     BookingManager bm = new BookingManager();
     BookingUI bookUI = new BookingUI();
     ServicesManager sm = new ServicesManager();
