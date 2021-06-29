@@ -1,9 +1,9 @@
 package View.AuthenticationMenu;
 
-import Controller.AdminMenuController;
-import Controller.SessionController;
-import Controller.UserMenuController;
-import Model.Authentication;
+import View.AdminMenu.AdminMenu;
+import Controller.Session.SessionController;
+import View.UserMenu.UserMenu;
+import Controller.Authentication.Authentication;
 import Model.UserAccount;
 import View.RailwayMenu.MenuItems;
 import View.RailwayMenu.RailwaysMenu;
@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public class AuthenticationMenu {
     private RailwaysMenu menu = new RailwaysMenu();
     private AuthenticationForms authForms = new AuthenticationForms();
-    private AdminMenuController adminMenu = new AdminMenuController();
-    private UserMenuController userMenu = new UserMenuController();
+    private AdminMenu adminMenu = new AdminMenu();
+    private UserMenu userMenu = new UserMenu();
 
 
     public void authenticationMenu() throws ParseException {

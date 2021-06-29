@@ -1,4 +1,4 @@
-package Model;
+package Utilities;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -7,10 +7,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,6 +27,14 @@ public class RailwayUtility {
         String userChoice = sc.nextLine().toUpperCase(Locale.ROOT);
         return userChoice;
     }
+
+        public String getCurrentTime() {
+        Date date = Calendar.getInstance().getTime();
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        String strTime = dateFormat.format(date);
+        return strTime;
+    }
+
 
     public String getStringInput(){
         Scanner sc = new Scanner(System.in);

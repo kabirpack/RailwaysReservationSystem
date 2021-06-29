@@ -1,5 +1,9 @@
-package Model;
+package Controller.BookingController;
 
+import Model.PassengerTrain;
+import Utilities.RailwayUtility;
+import Model.Ticket;
+import Model.UserAccount;
 import View.RailwayMenu.MenuItems;
 import View.RailwayMenu.RailwaysMenu;
 
@@ -7,7 +11,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BookingManager {
+public class BookingManager implements IBookingManager {
 RailwaysMenu menu = new RailwaysMenu();
 RailwayUtility utility = new RailwayUtility();
 int prompt;
@@ -115,42 +119,51 @@ int prompt;
             train.getAvailableSeats().add(seat);
         }
         System.out.println("after cancelling available seats" + train.getAvailableSeats());
-
+        train.getTickets().remove(ticket);
+        confirmWaitingTicket(train);
     }
 
-    public void confirmWaitingTicket(PassengerTrain train){
+    public void confirmWaitingTicket(PassengerTrain train) {
         ArrayList<Ticket> bookedTickets = train.getTickets();
+        if(train.getWlSeats() > 0){
         Ticket confirmTicket = bookedTickets.get(0);
-        for(int i = 0; i<bookedTickets.size();i++){
-           if(bookedTickets.get(i).getRouteLength()  > confirmTicket.getRouteLength() ){
-               confirmTicket = bookedTickets.get(i);
-           }
-       }
-        ArrayList<String> pnrSeatMap = new ArrayList<>();
-        HashMap<String,String> seatMap = new HashMap<>();
-        HashMap<String, String> passengers = confirmTicket.getPassengerList();
-
-        int i=0;
-        for(String psngr : passengers.keySet()){
-            seatMap.put(psngr,train.getAvailableSeats().get(i));
-            pnrSeatMap.add(train.getAvailableSeats().get(i));
-            i=i+1;
+        for (int i = 0; i < bookedTickets.size(); i++) {
+            if (bookedTickets.get(i).getRouteLength() > confirmTicket.getRouteLength()) {
+                if (!bookedTickets.get(i).isConfirmed()) {
+                    confirmTicket = bookedTickets.get(i);
+                }
+            }
         }
+        if(!confirmTicket.isConfirmed()) {
+            ArrayList<String> pnrSeatMap = new ArrayList<>();
+            HashMap<String, String> seatMap = new HashMap<>();
+            HashMap<String, String> passengers = confirmTicket.getPassengerList();
 
-        int length = passengers.keySet().size();
-        for(int j=0; j<length;  j++){
-            train.removeAvailableSeat(j);
-            length--;
+            int i = 0;
+            for (String psngr : passengers.keySet()) {
+                seatMap.put(psngr, train.getAvailableSeats().get(i));
+                pnrSeatMap.add(train.getAvailableSeats().get(i));
+                i = i + 1;
+            }
+
+            int length = passengers.keySet().size();
+            for (int j = 0; j < length; j++) {
+                train.removeAvailableSeat(j);
+                length--;
+            }
+
+            confirmTicket.setSeatMap(seatMap);
+            confirmTicket.setPassengerList(passengers);
+            confirmTicket.setStatus("CONFIRMED");
+            confirmTicket.setConfirmed(true);
+            train.addBookedSeats(confirmTicket.getPnrNumber(), pnrSeatMap);
+            train.decrementTotalSeats(length);
+            train.getWaitingList().remove(confirmTicket.getPnrNumber());
+            train.incrementWlSeats(passengers.keySet().size());
+            train.getTickets().add(confirmTicket);
+            System.out.println("Ticket " + confirmTicket.getPnrNumber() + " is confirmed");
         }
-
-        confirmTicket.setSeatMap(seatMap);
-        confirmTicket.setPassengerList(passengers);
-        confirmTicket.setStatus("CONFIRMED");
-        confirmTicket.setConfirmed(true);
-        train.addBookedSeats(confirmTicket.getPnrNumber(),pnrSeatMap);
-        train.decrementTotalSeats(length);
-        train.getTickets().add(confirmTicket);
-        System.out.println("Ticket " + confirmTicket.getPnrNumber() + " is confirmed");
+    }
 
     }
 

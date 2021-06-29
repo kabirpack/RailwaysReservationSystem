@@ -1,12 +1,14 @@
 package Model;
 
+import Model.Interfaces.IPassengerTrain;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class PassengerTrain extends Train{
+public class PassengerTrain extends Train implements IPassengerTrain {
 
     private int totalSeats;
     private int acSeats;
@@ -54,16 +56,6 @@ public class PassengerTrain extends Train{
         return true;
     }
 
-    public boolean isSeatAvailable(String seat){
-        for(ArrayList<String> bookedSeat : bookedSeats.values()){
-            for(String seats : bookedSeat) {
-                if (seat.equals(bookedSeat)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
 
     public void decrementTotalSeats(int seat) {
         this.totalSeats = totalSeats-seat;
@@ -82,8 +74,8 @@ public class PassengerTrain extends Train{
         this.wlSeats = wlSeats-seats ;
     }
 
-    public void incrementWlSeats() {
-        this.wlSeats = wlSeats+1 ;
+    public void incrementWlSeats(int seats) {
+        this.wlSeats = wlSeats+seats ;
     }
 
     public void setBookedSeats(HashMap<String, ArrayList<String>> bookedSeats) {

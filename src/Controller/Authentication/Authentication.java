@@ -1,11 +1,12 @@
-package Model;
+package Controller.Authentication;
 
-import Controller.SessionController;
+import Controller.Session.SessionController;
 import Db.RailwayDb;
+import Model.UserAccount;
 
 import java.util.ArrayList;
 
-public class Authentication {
+public class Authentication implements IAuthentication {
     private ArrayList<UserAccount> authenticatedAccounts;
     RailwayDb db = SessionController.getDb();
 
@@ -25,7 +26,7 @@ public class Authentication {
     public boolean validateCredential(String userName, String password){
         for(UserAccount account : authenticatedAccounts){
             if(account.getUserName().equals(userName)){
-                if(account.getPassword(userName).equals(password)){
+                if(account.getPassword().equals(password)){
                     return true;
                 }
             }
@@ -36,7 +37,7 @@ public class Authentication {
     public UserAccount getUserAccount(String userName, String password){
         for(UserAccount account : authenticatedAccounts){
             if(account.getUserName().equals(userName)){
-                if(account.getPassword(userName).equals(password)){
+                if(account.getPassword().equals(password)){
                     return account;
                 }
             }
@@ -47,9 +48,5 @@ public class Authentication {
     public void register(UserAccount user){
         RailwayDb db = SessionController.getDb();
         db.addAccount(user);
-    }
-
-    public ArrayList<UserAccount> getAuthenticatedAccounts() {
-        return authenticatedAccounts;
     }
 }

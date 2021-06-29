@@ -1,6 +1,8 @@
 package View.BookingManagerUI;
 
+import Controller.ServiceController.ServicesManager;
 import Model.*;
+import Utilities.RailwayUtility;
 
 import java.text.ParseException;
 import java.util.*;
@@ -10,19 +12,18 @@ public class BookingUI implements IBookingUI {
     RailwayUtility utility = new RailwayUtility();
     ArrayList<String> fromTo = new ArrayList<>();
     ArrayList<PassengerTrain> availableTrains = new ArrayList<>();
-//    Scanner sc = new Scanner(System.in);
+    ServicesManager sm = new ServicesManager();
 
 
     @Override
-    public ArrayList<String> getUserStation(ServicesManager sm) {
-        int fromIndex;
-        int toIndex;
-        Scanner sc = new Scanner(System.in);
+    public ArrayList<String> getUserStation() {
         this.done = false;
         while (!this.done) {
             try {
                 System.out.println("From");
                 String from = utility.getStringInput().toUpperCase(Locale.ROOT);
+
+
                 if (!sm.isStationAvailable(from)) {
                     System.out.println("Only following routes available");
                     sm.printRoutes();
@@ -43,15 +44,14 @@ public class BookingUI implements IBookingUI {
                     to = sm.getStationFromSubstring(to);
                     fromTo.add(to);
                 }
-
-                if (from.equals(to)) {
-                    System.out.println("From and To cannot be same");
-                    throw new InputMismatchException();
-                }
-                if (sm.getRouteLength(from, to) < 0){
+                if (!sm.isRouteValid(from, to)) {
                     System.out.println("No trains available for this route");
                     throw new InputMismatchException();
                 }
+//                if (sm.getRouteLength(from, to) <= 0){
+//                    System.out.println("No trains available for this route");
+//                    throw new InputMismatchException();
+//                }
                 this.done = true;
             } catch (InputMismatchException e) {
                 System.out.println("Please give valid input");
@@ -62,9 +62,8 @@ public class BookingUI implements IBookingUI {
     }
 
     @Override
-    public PassengerTrain listServices(ArrayList<String>fromTo, UserAccount user, ServicesManager sm, String day) throws ParseException {
-        String from = fromTo.get(0);
-        String to = fromTo.get(1);
+    public int listServices(ArrayList<String>fromTo, String day) throws ParseException {
+        int choice =0;
         availableTrains = sm.showAvailableServices(fromTo.get(0), fromTo.get(1 ),day);
         if (availableTrains.size() > 0) {
             int siNo = 1;
@@ -75,21 +74,21 @@ public class BookingUI implements IBookingUI {
                 System.out.println();
                 siNo++;
             }
-        }
-        System.out.println("choose a service");
-        int arrayLength = availableTrains.size();
-        int choice = 1 ;
-        try{
-            choice = utility.getIntInput();
-            if(choice > arrayLength){
-                throw new InputMismatchException("invalid");
+            System.out.println("choose a service");
+            int arrayLength = availableTrains.size();
+            try {
+                choice = utility.getIntInput();
+                if (choice > arrayLength) {
+                    throw new InputMismatchException("invalid");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("please input correct choice");
             }
+            PassengerTrain chosenTrain = availableTrains.get(choice - 1);
+        }else{
+            System.out.println("No trains available on chosen date");
         }
-        catch(InputMismatchException e){
-            System.out.println("please input correct choice");
-        }
-        PassengerTrain chosenTrain = availableTrains.get(choice - 1);
-        return chosenTrain;
+        return choice;
     }
     @Override
     public HashMap<String, String> getPassengerDetails(){
@@ -133,8 +132,9 @@ public class BookingUI implements IBookingUI {
             index++;
         }
     }
+
     @Override
-    public void printAllTicket(UserAccount user, ServicesManager sm) throws ParseException {
+    public void printAllTicket(UserAccount user) throws ParseException {
         if(user.getMyTickets().size() > 0) {
             int index = 1;
             for (Ticket ticket : user.getMyTickets()) {

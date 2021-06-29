@@ -1,18 +1,16 @@
 package Model;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
 
 public class UserAccount {
-    private HashMap<String, String> credentials = new HashMap<>();
+    private String userName;
+    private String password;
     private boolean isAdmin;
     private ArrayList<Ticket> myTickets = new ArrayList<>();
 
     public UserAccount(String userName, String password) {
-        credentials.put(userName,password);
+        this.userName = userName;
+        this.password = password;
     }
 
     public boolean isAdmin() {
@@ -24,34 +22,23 @@ public class UserAccount {
     }
 
     public String getUserName() {
-        for(String i : credentials.keySet()){
-            return i;
-        }
-        return "";
+        return userName;
     }
 
-    public String getPassword(String userName){
-        return credentials.get(userName);
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getSessionTime() {
-        Date date = Calendar.getInstance().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
-        String strTime = dateFormat.format(date);
-        return strTime;
+    public String getPassword() {
+        return password;
     }
 
-    public String getSessionDay() {
-        DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
-        String day = dayOfWeek.toString().toUpperCase(Locale.ROOT);
-        return day;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public HashMap<String, String> getCredentials() {
-        return credentials;
-    }
 
-        public ArrayList<Ticket> getMyTickets() {
+    public ArrayList<Ticket> getMyTickets() {
         return myTickets;
     }
 
@@ -59,12 +46,10 @@ public class UserAccount {
         for(Ticket ticket : myTickets){
             this.myTickets.add(ticket);
         }
-//        this.myTickets = myTickets;
     }
 
     public void removeTickets(int index){
         myTickets.remove(index);
     }
-
 
 }

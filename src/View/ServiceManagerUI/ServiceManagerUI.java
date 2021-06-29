@@ -1,10 +1,11 @@
 package View.ServiceManagerUI;
 
-import Controller.ServiceController;
 import Model.PassengerTrain;
-import Model.RailwayUtility;
-import Model.ServicesManager;
+import Utilities.RailwayUtility;
+import Controller.ServiceController.ServicesManager;
 import Model.Ticket;
+import View.RailwayMenu.MenuItems;
+import View.RailwayMenu.RailwaysMenu;
 
 import java.util.*;
 
@@ -12,9 +13,11 @@ public class ServiceManagerUI {
     RailwayUtility utility = new RailwayUtility();
     boolean done = false;
     Scanner sc = new Scanner(System.in);
+    ServicesManager sm = new ServicesManager();
+    RailwaysMenu menu = new RailwaysMenu();
 
 
-    public void addService(ServicesManager sm, ServiceController serviceController) {
+    public void addService() {
         while (!this.done) {
             try {
                 System.out.println("Enter train number");
@@ -60,17 +63,22 @@ public class ServiceManagerUI {
                 this.done = true;
                 newTrain.setRoutes(routes);
 
-                serviceController.addServiceControl(newTrain,sm);
+                if(sm.addService(newTrain)){
+                    System.out.println("Train added Successfully");
+                    System.out.println("New Available Train List");
+                    printServices(sm.getActiveServices());
+                }else {
+                    System.out.println("Train failed to get added");
+                }
 
             } catch (InputMismatchException e) {
                 System.out.println("Please enter valid input");
             }
         }
-        PassengerTrain train = new PassengerTrain();
     }
 
 
-    public void removeService(ServicesManager sm, ServiceController serviceController) {
+    public void removeService() {
         sm.showAllServices();
         this.done = false;
         while (!this.done) {
@@ -81,14 +89,20 @@ public class ServiceManagerUI {
                     throw new InputMismatchException("");
                 }
                 System.out.println("Are you sure to remove");
-                serviceController.removeServiceControl(sm,choice);
+                int prompt = menu.showRailwayMenu(MenuItems.yesOrNo.class);
+                if (prompt == 1) {
+                    sm.removeService(sm.getTrainList().get(choice - 1));
+                }
+                System.out.println("New Available Train List");
+                printServices(sm.getActiveServices());
+                done = true;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid Input");
             }
         }
     }
 
-    public void holdService(ServicesManager sm, ServiceController serviceController){
+    public void holdService(){
         sm.showAllServices();
         this.done = false;
         while (!this.done) {
@@ -99,14 +113,20 @@ public class ServiceManagerUI {
                     throw new InputMismatchException("");
                 }
                 System.out.println("Are you sure you want to remove?");
-                serviceController.holdServiceControl(sm,choice);
+                int prompt = menu.showRailwayMenu(MenuItems.yesOrNo.class);
+                if (prompt == 1) {
+                    sm.holdService(sm.getTrainList().get(choice - 1));
+                }
+                System.out.println("New Available Train List");
+                printServices(sm.getActiveServices());
+                done = true;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid Input");
             }
         }
     }
 
-    public void resumeService(ServicesManager sm, ServiceController serviceController){
+    public void resumeService(){
         if(sm.getInactiveTrains().size()>0) {
             sm.showInactiveServices();
             this.done = false;
@@ -118,7 +138,13 @@ public class ServiceManagerUI {
                         throw new InputMismatchException("");
                     }
                     System.out.println("Are you sure you want to resume?");
-                    serviceController.resumeServiceControl(sm, choice);
+                    int prompt = menu.showRailwayMenu(MenuItems.yesOrNo.class);
+                    if (prompt == 1) {
+                        sm.resumeService(sm.getTrainList().get(choice - 1));
+                    }
+                    System.out.println("New Available Train List");
+                    printServices(sm.getActiveServices());
+                    done = true;
                 } catch (InputMismatchException e) {
                     System.out.println("Invalid Input");
                 }
@@ -129,6 +155,17 @@ public class ServiceManagerUI {
         }
     }
 
+    public void printServices(ArrayList<PassengerTrain> trains){
+        int siNo = 1;
+        for (PassengerTrain train : trains) {
+            System.out.print(siNo + ". " + train.getName() + " ");
+            System.out.print(train.getTrainNumber() + " ");
+            System.out.print(train.getSchedulebyDay(utility.getCurrentDay()) + " ");
+            System.out.print(train.getRoutes() + " ");
+            System.out.println();
+            siNo++;
+        }
+    }
     public int printChooseService(ArrayList<PassengerTrain> trains){
         int siNo = 1;
         for (PassengerTrain train : trains) {
@@ -148,7 +185,6 @@ public class ServiceManagerUI {
                 if(choice > trains.size()){
                     throw new InputMismatchException();
                 }
-                done = true;
                 return choice;
             }
             catch(InputMismatchException e){

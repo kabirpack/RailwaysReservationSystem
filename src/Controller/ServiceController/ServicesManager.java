@@ -1,11 +1,13 @@
-package Model;
+package Controller.ServiceController;
 
-import Controller.SessionController;
+import Controller.Session.SessionController;
 import Db.RailwayDb;
+import Model.PassengerTrain;
+import View.ServiceManagerUI.ServiceManagerUI;
 
 import java.util.ArrayList;
 
-public class ServicesManager {
+public class ServicesManager implements IServiceManager {
 
     private ArrayList<PassengerTrain> trainList;
     RailwayDb db = SessionController.getDb();
@@ -167,26 +169,24 @@ public class ServicesManager {
 
     }
 
-    public void printFromLocations(){
-        for(PassengerTrain train : trainList){
-            if(train.isActive()){
-                for(int i=0; i<train.getRoutes().size()-1;i++){
-                    System.out.print(train.getRoutes().get(i) + ",");
-                    System.out.println(" ");
-                }
-            }
-        }
+
+    public void prepareChart(){
+        ServiceManagerUI smUI = new ServiceManagerUI();
+        ArrayList<PassengerTrain> activeTrains;
+        activeTrains = this.getActiveServices();
+        int choice = smUI.printChooseService(activeTrains);
+        smUI.printTrainChart(activeTrains.get(choice-1));
     }
 
-    public void printToLocations(){
+    public boolean isRouteValid(String from, String to){
         for(PassengerTrain train : trainList){
             if(train.isActive()){
-                for(int i=1; i<train.getRoutes().size();i++){
-                    System.out.print(train.getRoutes().get(i) + ",");
-                    System.out.println(" ");
-                }
+                if(train.getRoutes().contains(from) && train.getRoutes().contains(to) && getRouteLength(from, to) > 0)
+                return true;
             }
         }
+        return false;
     }
+
 
 }

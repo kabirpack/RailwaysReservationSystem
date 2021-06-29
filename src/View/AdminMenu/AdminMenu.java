@@ -1,7 +1,8 @@
-package Controller;
+package View.AdminMenu;
 
-import Model.Authentication;
-import Model.ServicesManager;
+import Controller.Session.SessionController;
+import View.UserMenu.UserMenu;
+import Controller.ServiceController.ServicesManager;
 import Model.UserAccount;
 import View.RailwayMenu.MenuItems;
 import View.RailwayMenu.RailwaysMenu;
@@ -9,12 +10,10 @@ import View.ServiceManagerUI.ServiceManagerUI;
 
 import java.text.ParseException;
 
-public class AdminMenuController {
+public class AdminMenu {
     RailwaysMenu menu = new RailwaysMenu();
     ServiceManagerUI smUI = new ServiceManagerUI();
-    ServiceController serviceController = new ServiceController();
-    UserMenuController userMenuController = new UserMenuController();
-    Authentication auth = new Authentication();
+    UserMenu userMenuController = new UserMenu();
     ServicesManager sm = new ServicesManager();
 
     public void adminMenuController(UserAccount user) throws ParseException {
@@ -26,22 +25,22 @@ public class AdminMenuController {
 
                     switch (choice){
                         case 1:{
-                            smUI.addService(sm,serviceController);
+                            smUI.addService();
                             this.adminMenuController(user);
                             return;
                         }
                         case 2:{
-                            smUI.removeService(sm, serviceController);
+                            smUI.removeService();
                             this.adminMenuController(user);
                             return;
                         }
                         case 3: {
-                            smUI.holdService(sm, serviceController);
+                            smUI.holdService();
                             this.adminMenuController(user);
                             return;
                         }
                         case 4: {
-                            smUI.resumeService(sm, serviceController);
+                            smUI.resumeService();
                             this.adminMenuController(user);
                             return;
                         }
@@ -64,7 +63,7 @@ public class AdminMenuController {
                 }
 
                 case 3:{
-                   serviceController.prepareChart(sm);
+                   sm.prepareChart();
                     this.adminMenuController(user);
                     return;
                 }

@@ -1,7 +1,5 @@
 package View.BookingManagerUI;
 
-import Model.PassengerTrain;
-import Model.ServicesManager;
 import Model.Ticket;
 import Model.UserAccount;
 
@@ -11,11 +9,11 @@ import java.util.HashMap;
 
 public interface IBookingUI {
 
-    ArrayList<String> getUserStation(ServicesManager sm);
-    PassengerTrain listServices(ArrayList<String>fromTo, UserAccount user, ServicesManager sm, String date) throws ParseException;
+    ArrayList<String> getUserStation();
+    int listServices(ArrayList<String>fromTo, String date) throws ParseException;
     HashMap<String, String> getPassengerDetails();
     void printTicket(ArrayList<Ticket> tickets);
-    void printAllTicket(UserAccount user, ServicesManager sm) throws ParseException;
+    void printAllTicket(UserAccount user) throws ParseException;
 
 
 }

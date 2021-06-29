@@ -1,6 +1,6 @@
 package Main;
 
-import Controller.SessionController;
+import Controller.Session.SessionController;
 import Db.RailwayDb;
 import View.AuthenticationMenu.AuthenticationMenu;
 

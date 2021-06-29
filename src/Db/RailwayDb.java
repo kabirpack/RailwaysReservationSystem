@@ -1,13 +1,14 @@
 package Db;
 
+import Db.Interfaces.IRailwayDb;
 import Model.PassengerTrain;
-import Model.RailwayUtility;
+import Utilities.RailwayUtility;
 import Model.UserAccount;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class RailwayDb {
+public class RailwayDb implements IRailwayDb {
 
     RailwayUtility utility = new RailwayUtility();
     private static ArrayList<PassengerTrain> trainList = new ArrayList<>();
@@ -20,7 +21,6 @@ public class RailwayDb {
     public void addAccount(UserAccount account){
         this.accounts.add(account);
     }
-
     public void setAccounts(ArrayList<UserAccount> accounts) {
         this.accounts = accounts;
     }

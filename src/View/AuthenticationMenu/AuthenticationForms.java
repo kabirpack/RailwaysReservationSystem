@@ -1,8 +1,8 @@
 package View.AuthenticationMenu;
 
-import Controller.SessionController;
-import Model.Authentication;
-import Model.RailwayUtility;
+import Controller.Session.SessionController;
+import Controller.Authentication.Authentication;
+import Utilities.RailwayUtility;
 import Model.UserAccount;
 
 import java.text.ParseException;

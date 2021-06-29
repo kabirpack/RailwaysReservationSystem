@@ -1,7 +1,7 @@
-package Controller;
+package View.UserMenu;
 
-import Model.Authentication;
-import Model.ServicesManager;
+import Controller.BookingController.BookingValidator;
+import Controller.Session.SessionController;
 import View.BookingManagerUI.BookingUI;
 import View.RailwayMenu.MenuItems;
 import View.RailwayMenu.RailwaysMenu;
@@ -9,37 +9,35 @@ import View.RailwayMenu.RailwaysMenu;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-public class UserMenuController {
+public class UserMenu {
     RailwaysMenu menu = new RailwaysMenu();
     BookingUI bookUI = new BookingUI();
-    BookingController bc = new BookingController();
+    BookingValidator bookingValidator = new BookingValidator();
     ArrayList<String> fromTo = new ArrayList<>();
-    Authentication auth = new Authentication();
-    ServicesManager sm = new ServicesManager();
 
     public void userMenuController() throws ParseException {
         int choice = menu.showRailwayMenu(MenuItems.userMenu.class);
         switch (choice){
             case 1:{
-            fromTo = bookUI.getUserStation(sm);
+            fromTo = bookUI.getUserStation();
             choice = menu.showRailwayMenu(MenuItems.ticketDateChooser.class);
             switch (choice){
                 case 1:{
-                    bc.bookToday(fromTo, sm);
+                    bookingValidator.bookToday(fromTo);
                     if(!SessionController.getUser().isAdmin()) {
                         this.userMenuController();
                     }
                     return;
                 }
                 case 2:{
-                    bc.bookTomorrow(fromTo, sm);
+                    bookingValidator.bookTomorrow(fromTo);
                     if(!SessionController.getUser().isAdmin()) {
                         this.userMenuController();
                     }
                     return;
                 }
                 case 3:{
-                    bc.bookManual(fromTo, sm);
+                    bookingValidator.bookManualDate(fromTo);
                     if(!SessionController.getUser().isAdmin()) {
                         this.userMenuController();
                     }
@@ -49,14 +47,14 @@ public class UserMenuController {
             return;
             }
             case 2:{
-                    bc.cancelTicket(SessionController.getUser(), sm);
+                    bookingValidator.cancelTicket(SessionController.getUser());
                 if(!SessionController.getUser().isAdmin()) {
                     this.userMenuController();
                 }
                     return;
             }
             case 3:{
-                    bookUI.printAllTicket(SessionController.getUser(), sm);
+                    bookUI.printAllTicket(SessionController.getUser());
                 if(!SessionController.getUser().isAdmin()) {
                     this.userMenuController();
                 }
